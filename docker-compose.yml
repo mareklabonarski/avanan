@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    command: /bin/bash -c "wait-for-it -s db:3306 -t 90 -- python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+#    command: python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: mariadb
+    env_file:
+      - ./.env.dev
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  producer:
+    build: .
+    command: python -m producer
+    init: true
+    volumes:
+      - ./:/usr/src/app
+    env_file:
+      - ./.env.dev
+    restart: unless-stopped
+
+  consumer:
+    build: .
+    command: /bin/bash -c "wait-for-it -s db:3306  -t 90 -- python -m consumer"
+    init: true
+    environment:
+      - DEBUG=1
+    volumes:
+      - ./:/usr/src/app
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+      - web
+    restart: unless-stopped
+
+volumes:
+  mariadb_data:
