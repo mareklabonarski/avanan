@@ -26,9 +26,24 @@ in main project folder, run:
 ```
 docker-compose up
 ```
+
 For the first time, you will have to wait couple of container restarts. First, db is being created, and other containers fail to connect to it, and will restart.
 Later, schema migration will be run, and containers dependent on it will be restarting until the schema migration is completed.
 Eventually all containers will be healthy and ready to work, you should be able to recognize it by looking at docker logs.
+
+create superuser to login to admin:
+```
+docker-compose exec web python manage.py createsuperuser
+```
+Go to http://localhost:8000/admin/web/sensitivedatapattern/add/
+and add following pattern: 
+```
+.*(4[0-9]{3} [0-9]{4} [0-9]{4} (?:[0-9]{4})?).*
+```
+This will detect Visa Cards numbers.
+Now, you can go to slack and post a message '4056 2106 0266 6505' in #general.
+It will be removed from chat and appropiate information will be displayed.
+
 
 The sync boto3 api was calls are deferred to a thread executor, so that they don't block async loop on I/O...
 
