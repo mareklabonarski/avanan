@@ -13,7 +13,7 @@ app = AsyncApp(token=env('SLACK_BOT_TOKEN'))
 handler = AsyncSocketModeHandler(app, env('SLACK_APP_TOKEN'))
 await handler.start_async()
 ```
-So this is a correct socket based (not HTTP webhook) approach.
+So this is a correct socket based (websockets, not HTTP webhook) approach.
 
 Description of the task clearly states, that in order to manage ocnfiguration and browse results, django admin can be used.
 3. Create a simple Data Loss Prevention tool that given a file, open its content and try to look for patterns (for example: a credit card number), 
