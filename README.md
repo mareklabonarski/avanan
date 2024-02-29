@@ -20,7 +20,7 @@ Description of the task clearly states, that in order to manage ocnfiguration an
 using a list of regular expressions, make it possible to manage those patterns using **django admin**
 4. Use **django admin** to also show messages that were caught by the DLP tool, show the message, its content and the pattern that caught it.
 
-In order to run it, best would be to use existing (my) credentials and the application which I created and configured 
+In order to run it, best would be to use existing (my) credentials and the Slack application which I created and configured 
 (added required permissions for desired events reception).
 in main project folder, run:
 ```
