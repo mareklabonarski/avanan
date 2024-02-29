@@ -30,3 +30,5 @@ For the first time, you will have to wait couple of container restarts. First, d
 Later, schema migration will be run, and containers dependent on it will be restarting until the schema migration is completed.
 Eventually all containers will be healthy and ready to work, you should be able to recognize it by looking at docker logs.
 
+The sync boto3 api was calls are deferred to a thread executor, so that they don't block async loop on I/O...
+
